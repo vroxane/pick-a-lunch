@@ -1,13 +1,17 @@
 "use client";
 
-import Servings from "@/components/Servings";
 import React from "react";
+import Servings from "@/components/Servings";
+import Meals from "@/components/Meals";
 
 const Home = () => {
+  // useState pour récupérer le nombre de repas et le passer a Meals
+
   return (
     <main>
       <Servings />
-      {/* <MealsPreferences />
+      <Meals maxMeals={3} />
+      {/* 
       <Planning /> */}
     </main>
   );

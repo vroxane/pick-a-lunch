@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Box, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 

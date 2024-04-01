@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 
 import { Divider, FormControlLabel, Rating, Stack } from "@mui/material";
 
@@ -7,19 +7,20 @@ import NoMealsIcon from "@mui/icons-material/NoMeals";
 import DayCheckbox from "./DayCheckbox";
 
 export type Weekday =
-  | "Monday"
-  | "Tuesday"
-  | "Wednesday"
-  | "Thursday"
-  | "Friday"
-  | "Saturday"
-  | "Sunday";
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
 
 interface Props {
   weekday: Weekday;
   shouldHideDivider?: boolean;
   onChange: (name: string, value: number) => void;
   defaultValue: number;
+  defaultMaxValue: number;
 }
 
 const DayServings = ({
@@ -27,19 +28,29 @@ const DayServings = ({
   shouldHideDivider,
   onChange,
   defaultValue,
+  defaultMaxValue,
 }: Props) => {
   const [dayIsDisabled, setDayIsDisabled] = useState(false);
-  const disabledColor = "#999";
-  const handleRatingChange = (
-    event: React.SyntheticEvent<Element, Event>,
-    value: number,
-  ) => {
-    onChange(event.target.name, value);
-  };
-  const handleDayCheck = (event: React.SyntheticEvent, checked: boolean) => {
-    if (!checked) {
-      onChange(event.target.name, 0);
+  const [servingsValue, setServingsValue] = useState(defaultValue);
+
+  useEffect(() => {
+    if (dayIsDisabled) {
+      onChange(weekday, 0);
+    } else {
+      onChange(weekday, servingsValue);
     }
+  }, [dayIsDisabled, onChange, servingsValue, weekday]);
+
+  const disabledColor = "#999";
+
+  const handleRatingChange = (
+    event: SyntheticEvent<Element, Event>,
+    value: number | null,
+  ) => {
+    setServingsValue(value ?? defaultValue);
+  };
+
+  const handleDayCheck = (event: React.SyntheticEvent, checked: boolean) => {
     setDayIsDisabled(!checked);
   };
 
@@ -59,9 +70,9 @@ const DayServings = ({
         <FormControlLabel
           onChange={handleDayCheck}
           name={weekday}
-          control={<DayCheckbox label={weekday} />}
           label={weekday}
-          sx={{ width: 150 }}
+          control={<DayCheckbox label={weekday} />}
+          sx={{ width: 150, textTransform: "capitalize" }}
         />
 
         <Rating
@@ -75,7 +86,7 @@ const DayServings = ({
             )
           }
           emptyIcon={<NoMealsIcon sx={{ color: "#eee" }} />}
-          max={defaultValue > 6 ? defaultValue : 6}
+          max={defaultValue > defaultMaxValue ? defaultValue : defaultMaxValue}
           size="large"
           disabled={dayIsDisabled}
           onChange={handleRatingChange}

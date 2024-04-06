@@ -5,24 +5,26 @@ import TuneIcon from "@mui/icons-material/Tune";
 
 import DayServings, { Weekday } from "@/components/DayServings";
 import { SoupKitchen } from "@mui/icons-material";
-
-const DEFAULT_SERVINGS_PER_DAY = 3;
-const DEFAULT_MAX_SERVINGS_PER_DAY = 6;
+import CONSTANT from "../../app/constants";
 
 type ServingsType = {
   [key in Weekday]: number;
 };
 
-const Servings = () => {
+interface Props {
+  handleServingsUpdate: (totalServings: number) => void;
+}
+
+const Servings = ({ handleServingsUpdate }: Props) => {
   const [totalServings, setTotalServings] = useState(0);
   const servings: ServingsType = {
-    monday: DEFAULT_SERVINGS_PER_DAY,
-    tuesday: DEFAULT_SERVINGS_PER_DAY,
-    wednesday: DEFAULT_SERVINGS_PER_DAY,
-    thursday: DEFAULT_SERVINGS_PER_DAY,
-    friday: DEFAULT_SERVINGS_PER_DAY,
-    saturday: DEFAULT_SERVINGS_PER_DAY,
-    sunday: DEFAULT_SERVINGS_PER_DAY,
+    monday: CONSTANT.SERVINGS_PER_DAY,
+    tuesday: CONSTANT.SERVINGS_PER_DAY,
+    wednesday: CONSTANT.SERVINGS_PER_DAY,
+    thursday: CONSTANT.SERVINGS_PER_DAY,
+    friday: CONSTANT.SERVINGS_PER_DAY,
+    saturday: CONSTANT.SERVINGS_PER_DAY,
+    sunday: CONSTANT.SERVINGS_PER_DAY,
   };
 
   const handleServingsChange = (name: string, value: number) => {
@@ -30,11 +32,12 @@ const Servings = () => {
     setTotalServings(
       Object.values(servings).reduce((acc, val) => acc + val, 0),
     );
+    handleServingsUpdate(totalServings);
   };
 
   const defaultDayProps = {
-    defaultValue: DEFAULT_SERVINGS_PER_DAY,
-    defaultMaxValue: DEFAULT_MAX_SERVINGS_PER_DAY,
+    defaultValue: CONSTANT.SERVINGS_PER_DAY,
+    defaultMaxValue: CONSTANT.MAX_SERVINGS_PER_DAY,
     onChange: handleServingsChange,
   };
 

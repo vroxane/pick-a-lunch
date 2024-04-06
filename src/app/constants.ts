@@ -1,0 +1,8 @@
+const CONSTANT = {
+  MEALS_PER_WEEK: 5,
+  MAX_MEALS_PER_WEEK: 14,
+  SERVINGS_PER_DAY: 3,
+  MAX_SERVINGS_PER_DAY: 6,
+};
+
+export default CONSTANT;
